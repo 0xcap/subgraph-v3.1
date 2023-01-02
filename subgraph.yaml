@@ -1,0 +1,44 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Trade
+    network: arbitrum-one
+    source:
+      address: "1231231231231231231231231231231231231231"
+      abi: Trade
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Deposit
+        - FundingUpdated
+        - OrderCancelled
+        - OrderCreated
+        - PositionDecreased
+        - PositionIncreased
+        - PositionLiquidated
+        - Withdraw
+      abis:
+        - name: Trade
+          file: ./abis/Trade.json
+      eventHandlers:
+        - event: Deposit(indexed address,uint256)
+          handler: handleDeposit
+        - event: FundingUpdated(string,int256,int256)
+          handler: handleFundingUpdated
+        - event: OrderCancelled(indexed uint256,indexed address)
+          handler: handleOrderCancelled
+        - event: OrderCreated(indexed uint256,indexed address,string,bool,uint256,uint256,uint256,uint256,uint8,bool)
+          handler: handleOrderCreated
+        - event: PositionDecreased(indexed uint256,indexed address,string,bool,uint256,uint256,uint256,uint256,uint256,uint256,int256,uint256,uint256,int256,int256)
+          handler: handlePositionDecreased
+        - event: PositionIncreased(indexed uint256,indexed address,string,bool,uint256,uint256,uint256,uint256,uint256,uint256,int256,uint256,uint256)
+          handler: handlePositionIncreased
+        - event: PositionLiquidated(indexed address,string,bool,uint256,uint256,uint256,uint256,uint256)
+          handler: handlePositionLiquidated
+        - event: Withdraw(indexed address,uint256)
+          handler: handleWithdraw
+      file: ./src/trade.ts
