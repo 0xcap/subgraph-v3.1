@@ -1,6 +1,6 @@
 specVersion: 0.0.5
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum
     name: Trade
@@ -20,16 +20,20 @@ dataSources:
         - PositionLiquidated
       abis:
         - name: Trade
-          file: ./abis/Trade.json
+          file: Trade\abis\Trade.json
       eventHandlers:
         - event: OrderCancelled(indexed uint256,indexed address)
           handler: handleOrderCancelled
-        - event: OrderCreated(indexed uint256,indexed address,string,bool,uint256,uint256,uint256,uint256,uint8,bool)
+        - event: OrderCreated(indexed uint256,indexed
+            address,string,bool,uint256,uint256,uint256,uint256,uint8,bool)
           handler: handleOrderCreated
-        - event: PositionDecreased(indexed uint256,indexed address,string,bool,uint256,uint256,uint256,uint256,uint256,uint256,int256,uint256,uint256,int256,int256)
+        - event: PositionDecreased(indexed uint256,indexed
+            address,string,bool,uint256,uint256,uint256,uint256,uint256,uint256,int256,uint256,uint256,int256,int256)
           handler: handlePositionDecreased
-        - event: PositionIncreased(indexed uint256,indexed address,string,bool,uint256,uint256,uint256,uint256,uint256,uint256,int256,uint256,uint256)
+        - event: PositionIncreased(indexed uint256,indexed
+            address,string,bool,uint256,uint256,uint256,uint256,uint256,uint256,int256,uint256,uint256)
           handler: handlePositionIncreased
-        - event: PositionLiquidated(indexed address,string,bool,uint256,uint256,uint256,uint256,uint256)
+        - event: PositionLiquidated(indexed
+            address,string,bool,uint256,uint256,uint256,uint256,uint256)
           handler: handlePositionLiquidated
-      file: ./src/trade.ts
+      file: Trade\Trade.wasm

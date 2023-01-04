@@ -10,9 +10,10 @@ import {
   PositionLiquidated,
   Withdraw
 } from "../generated/Trade/Trade"
-import { ExampleEntity } from "../generated/schema"
+import { Order } from "../generated/schema"
 
-export function handleDeposit(event: Deposit): void {
+
+/*export function handleDeposit(event: Deposit): void {
   // Entities can be loaded from the store using a string ID; this ID
   // needs to be unique across all entities of the same type
   let entity = ExampleEntity.load(event.transaction.from)
@@ -63,18 +64,120 @@ export function handleDeposit(event: Deposit): void {
   // - contract.gov(...)
   // - contract.pool(...)
   // - contract.store(...)
-}
+}*/
+
+let liqId = 0
 
 export function handleFundingUpdated(event: FundingUpdated): void {}
 
-export function handleOrderCancelled(event: OrderCancelled): void {}
 
-export function handleOrderCreated(event: OrderCreated): void {}
+export function handleOrderCancelled(event: OrderCancelled): void {
 
-export function handlePositionDecreased(event: PositionDecreased): void {}
+  let order = Order.load(event.params.orderId.toString())
 
-export function handlePositionIncreased(event: PositionIncreased): void {}
+  if (order) {
+    if (order.status != "active") return
+    order.status = "cancelled"
+    order.timestamp = event.block.timestamp.toI32()
+    order.save()
+  }
 
-export function handlePositionLiquidated(event: PositionLiquidated): void {}
+}
+
+export function handleOrderCreated(event: OrderCreated): void {
+
+  let order = Order.load(event.params.orderId.toString())
+
+  if (order == null) {
+
+    order = new Order(event.params.orderId.toString())
+    order.orderId = event.params.orderId
+    order.txHash = event.transaction.hash.toHexString()
+    order.orderType = event.params.orderType
+    order.user = event.params.user
+    order.market = event.params.market
+    order.isLong = event.params.isLong
+    order.size = event.params.size
+    order.margin = event.params.margin
+
+    order.price = event.params.price
+    order.fee = event.params.fee // total fees paid can be tracked here
+
+    order.status = "active"
+    order.isReduceOnly = event.params.isReduceOnly
+
+    order.timestamp = event.block.timestamp.toI32()
+    order.blockNumber = event.block.number
+
+    order.save()
+
+  }
+
+}
+
+export function handlePositionDecreased(event: PositionDecreased): void {
+
+
+    // Update order state
+    let order = Order.load(event.params.orderId.toString())
+    if (order == null) {
+      return
+    }
+
+    order.status = "executed"
+    order.timestamp = event.block.timestamp.toI32()
+    order.margin = event.params.margin
+    order.price = event.params.price
+    order.fee = event.params.fee
+    order.pnl = event.params.pnl
+    order.save()
+
+}
+
+export function handlePositionIncreased(event: PositionIncreased): void {
+
+    let order = Order.load(event.params.orderId.toString())
+
+    if (order == null) {
+      return
+    }
+
+    order.status = "executed"
+    order.timestamp = event.block.timestamp.toI32()
+    order.margin = event.params.margin
+    order.price = event.params.price
+    order.fee = event.params.fee
+    order.save()
+
+}
+
+export function handlePositionLiquidated(event: PositionLiquidated): void {
+
+  liqId++
+
+  let liqString = `${liqId}.liq`
+
+  let liqOrder = new Order(liqString)
+
+  liqOrder.orderId = BigInt.fromI32(liqId)
+  liqOrder.txHash = event.transaction.hash.toHexString()
+  liqOrder.user = event.params.user
+  liqOrder.market = event.params.market
+  liqOrder.price = event.params.price
+  liqOrder.isLong = event.params.isLong
+  liqOrder.size = event.params.size
+  liqOrder.margin = event.params.margin
+  liqOrder.pnl = BigInt.fromI32(-1).times(event.params.margin)
+  liqOrder.status = "liquidated"
+  liqOrder.fee = event.params.fee
+  liqOrder.liquidatorFee = event.params.liquidatorFee
+  liqOrder.orderType = 0
+  liqOrder.timestamp = event.block.timestamp.toI32()
+  liqOrder.blockNumber = event.block.number
+  liqOrder.isReduceOnly = false
+
+  liqOrder.save()
+
+}
 
 export function handleWithdraw(event: Withdraw): void {}
