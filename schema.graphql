@@ -16,6 +16,9 @@ type Order @entity {
   size: BigInt!
   margin: BigInt
   leverage: BigInt
+  positionMargin: BigInt
+	positionSize: BigInt
+	positionPrice: BigInt
   price: BigInt!
   pnl: BigInt
   fee: BigInt!

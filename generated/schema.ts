@@ -139,6 +139,57 @@ export class Order extends Entity {
     }
   }
 
+  get positionMargin(): BigInt | null {
+    let value = this.get("positionMargin");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set positionMargin(value: BigInt | null) {
+    if (!value) {
+      this.unset("positionMargin");
+    } else {
+      this.set("positionMargin", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get positionSize(): BigInt | null {
+    let value = this.get("positionSize");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set positionSize(value: BigInt | null) {
+    if (!value) {
+      this.unset("positionSize");
+    } else {
+      this.set("positionSize", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get positionPrice(): BigInt | null {
+    let value = this.get("positionPrice");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set positionPrice(value: BigInt | null) {
+    if (!value) {
+      this.unset("positionPrice");
+    } else {
+      this.set("positionPrice", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
   get price(): BigInt {
     let value = this.get("price");
     return value!.toBigInt();

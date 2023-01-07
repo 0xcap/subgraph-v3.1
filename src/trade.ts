@@ -127,8 +127,13 @@ export function handlePositionDecreased(event: PositionDecreased): void {
     order.status = "executed"
     order.timestamp = event.block.timestamp.toI32()
     order.margin = event.params.margin
+    order.size = event.params.size
     order.price = event.params.price
+    order.positionMargin = event.params.positionMargin
+    order.positionSize = event.params.positionSize
+    order.positionPrice = event.params.positionPrice
     order.fee = event.params.fee
+    order.fundingFee = event.params.fundingTracker
     order.pnl = event.params.pnl
     order.save()
 
@@ -145,8 +150,13 @@ export function handlePositionIncreased(event: PositionIncreased): void {
     order.status = "executed"
     order.timestamp = event.block.timestamp.toI32()
     order.margin = event.params.margin
+    order.size = event.params.size
     order.price = event.params.price
+    order.positionMargin = event.params.positionMargin
+    order.positionSize = event.params.positionSize
+    order.positionPrice = event.params.positionPrice
     order.fee = event.params.fee
+    order.fundingFee = event.params.fundingTracker
     order.save()
 
 }
