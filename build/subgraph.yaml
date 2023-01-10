@@ -2,9 +2,9 @@ specVersion: 0.0.5
 schema:
   file: schema.graphql
 dataSources:
-  - kind: ethereum
+  - kind: ethereum/contract
     name: Trade
-    network: mainnet
+    network: arbitrum-one
     source:
       address: "0x64132d85842f1A88A086D173CB66A66931963622"
       abi: Trade
