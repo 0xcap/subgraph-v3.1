@@ -6,7 +6,7 @@ dataSources:
     name: Trade
     network: mainnet
     source:
-      address: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"
+      address: "0x64132d85842f1A88A086D173CB66A66931963622"
       abi: Trade
     mapping:
       kind: ethereum/events
@@ -20,7 +20,7 @@ dataSources:
         - PositionLiquidated
       abis:
         - name: Trade
-          file: Trade\abis\Trade.json
+          file: Trade/abis/Trade.json
       eventHandlers:
         - event: OrderCancelled(indexed uint256,indexed address)
           handler: handleOrderCancelled
@@ -36,4 +36,4 @@ dataSources:
         - event: PositionLiquidated(indexed
             address,string,bool,uint256,uint256,uint256,uint256,uint256)
           handler: handlePositionLiquidated
-      file: Trade\Trade.wasm
+      file: Trade/Trade.wasm
