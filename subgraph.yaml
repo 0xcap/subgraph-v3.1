@@ -8,7 +8,7 @@ dataSources:
     name: Trade
     network: arbitrum-one
     source:
-      address: "0x39853756E886fD255830ea0876c80F2dde523803"
+      address: "0x08b1d6fe01660911b939e9c896ab53aba231f101"
       abi: Trade
     mapping:
       kind: ethereum/events
